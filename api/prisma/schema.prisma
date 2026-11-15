@@ -35,17 +35,16 @@ model Book {
   publishedYear   Int
   copiesAvailable Int      @default(1)
   genreId         Int
-  genre           Genre    @relation(fields: [genreId], references: [id])
+  genre           Genre    @relation(fields: [genreId], references: [id], onDelete: Restrict)
   createdAt       DateTime @default(now())
   reviews         Review[]
 
   @@index([genreId])
 }
 
-// Stretch: Review model
 model Review {
   id        Int      @id @default(autoincrement())
-  rating    Int // 1-5, validated in the API layer
+  rating    Int
   comment   String?
   createdAt DateTime @default(now())
   bookId    Int
@@ -53,6 +52,6 @@ model Review {
   book      Book     @relation(fields: [bookId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([bookId, userId]) // one review per user per book
+  @@unique([bookId, userId])
   @@index([bookId])
 }
