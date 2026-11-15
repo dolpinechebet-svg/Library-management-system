@@ -10,12 +10,31 @@ npm install
 npm run db:generate
 npm run db:migrate
 npm run db:seed
+npm run start:dev
 ```
 
 `db:migrate` applies the checked-in migrations to the configured PostgreSQL
 database. The seed can be rerun safely: genres, books, and sample users are
 upserted using their unique names, ISBNs, and emails. The seed creates four
 genres and sixteen books.
+
+Set `JWT_SECRET` to a random secret of at least 32 characters. To seed a
+login-capable librarian, set `SEED_LIBRARIAN_PASSWORD` (at least 8 characters)
+before running the seed. Public registration always creates a `PATRON`; never
+accept a client-supplied role. The Postman collection is in
+[`docs/postman_collection.json`](./docs/postman_collection.json).
+
+## API
+
+- `GET /genres`, `GET /genres/:id`, `POST /genres`, `PATCH /genres/:id`,
+  `DELETE /genres/:id`
+- `GET /books?genreId=&search=&page=1&limit=20`, `GET /books/:id`,
+  `POST /books`, `PATCH /books/:id`, `DELETE /books/:id`
+- `POST /auth/register`, `POST /auth/login`, `GET /users/profile`
+
+Book writes require a bearer JWT for a `LIBRARIAN`. Genre writes are currently
+unrestricted. Responses from book listing include pagination metadata and each
+book's genre.
 
 ## Schema Decisions
 
