@@ -3,7 +3,6 @@
 ## Data layer setup
 
 ```bash
-cd api
 cp .env.example .env
 # Set DATABASE_URL in .env to your hosted PostgreSQL connection URL.
 npm install
